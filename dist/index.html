@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'; connect-src 'self'; worker-src 'self'; manifest-src 'self'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#147f77"><meta name="description" content="مغامرة عربية تفاعلية لتعلم الأعداد من ١ إلى ١٠٠: عدّ والعب واكتشف الآحاد والعشرات.">
+<title>مملكة الأعداد السحرية</title>
+<link rel="manifest" href="./manifest.webmanifest"><link rel="icon" href="./icon.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="./icon-192.png"><link rel="stylesheet" href="./style.css">
+<script src="./core.js" defer></script><script src="./interaction.js" defer></script><script src="./app.js" defer></script>
+</head>
+<body>
+<header class="header"><div class="header-inner"><a href="#home" class="brand" aria-label="مملكة الأعداد السحرية، الرئيسية"><img src="./icon.svg" width="46" height="46" alt=""><span>مملكة الأعداد<span class="brand-sub">السحرية ✦</span></span></a><nav aria-label="التنقل الرئيسي"><a href="#home" data-nav="home">رحلة التعلم</a><a href="#progress" data-nav="progress">تقدّمي <span aria-hidden="true">☆</span></a><a href="#guide" data-nav="guide">للأهل</a></nav><span id="offline-status" class="connection" role="status">جارٍ تجهيز الحقيبة…</span></div></header>
+<section id="offline-detail" class="offline-detail" role="status" hidden><div><strong id="offline-detail-title"></strong><p id="offline-detail-text"></p><small id="offline-detail-diagnostic"></small></div><button id="offline-retry" class="btn small" type="button">استكمال التنزيل ↻</button></section>
+<div id="notice" class="notice" role="alert" hidden></div>
+<main id="app" tabindex="-1"></main>
+<footer class="footer"><span>خطوة صغيرة، اكتشاف كبير 🌱</span><span>تعلم هادئ • بلا إعلانات • تقدم محفوظ على جهازك</span></footer>
+<div id="toast" class="toast" role="status" hidden></div>
+<noscript><p class="notice">يرجى تفعيل JavaScript للعب وحفظ التقدم. لا يحتاج التطبيق إلى الإنترنت بعد تنزيل موارده.</p></noscript>
+</body></html>

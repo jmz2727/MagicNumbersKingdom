@@ -1,0 +1,61 @@
+name: Build offline Android app
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: magic-numbers-android
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Prepare all lessons and 100 local recordings
+        run: python3 scripts/prepare_assets.py
+      - name: Curriculum, drag/drop, offline and Android adapter checks
+        run: npm test
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Native routing and audio range checks
+        run: |
+          mkdir -p build/policy-test
+          javac -d build/policy-test app/src/main/java/com/jameel/magicnumbers/AssetPolicy.java tests/AssetPolicyTest.java
+          java -cp build/policy-test com.jameel.magicnumbers.AssetPolicyTest
+      - name: Verify Android SDK availability
+        shell: bash
+        run: |
+          test -n "$ANDROID_HOME"
+          if [ ! -f "$ANDROID_HOME/platforms/android-35/android.jar" ] || [ ! -x "$ANDROID_HOME/build-tools/35.0.0/zipalign" ]; then
+            sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+          fi
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+      - name: Build release without uploading any signing credentials
+        run: gradle --no-daemon :app:assembleRelease
+      - name: Verify bundle and prepare local signing tools
+        shell: bash
+        run: |
+          SDK_TOOLS="$ANDROID_HOME/build-tools/35.0.0"
+          mkdir -p ready
+          "$SDK_TOOLS/zipalign" -f -p 4 app/build/outputs/apk/release/app-release-unsigned.apk ready/Magic-Numbers-Kingdom-unsigned.apk
+          "$SDK_TOOLS/zipalign" -c -p 4 ready/Magic-Numbers-Kingdom-unsigned.apk
+          python3 scripts/verify_apk.py ready/Magic-Numbers-Kingdom-unsigned.apk
+          cp "$SDK_TOOLS/lib/apksigner.jar" ready/apksigner.jar
+          python3 scripts/build_evidence.py ready
+          sha256sum ready/*.apk ready/*.jar > ready/SHA256SUMS.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Magic-Numbers-Android-Build
+          path: ready/
+          if-no-files-found: error
+          retention-days: 30

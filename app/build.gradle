@@ -1,0 +1,36 @@
+plugins { id 'com.android.application' }
+
+def signingFile = providers.environmentVariable('KINGDOM_KEYSTORE_PATH').orNull
+android {
+    namespace 'com.jameel.magicnumbers'
+    compileSdk 35
+    defaultConfig {
+        applicationId 'com.jameel.magicnumbers'
+        minSdk 26
+        targetSdk 35
+        versionCode 10500
+        versionName '1.5.0'
+    }
+    if (signingFile) {
+        signingConfigs {
+            privateRelease {
+                storeFile file(signingFile)
+                storePassword providers.environmentVariable('KINGDOM_KEYSTORE_PASSWORD').get()
+                keyAlias providers.environmentVariable('KINGDOM_KEY_ALIAS').get()
+                keyPassword providers.environmentVariable('KINGDOM_KEY_PASSWORD').get()
+            }
+        }
+    }
+    buildTypes {
+        release {
+            debuggable false
+            minifyEnabled false
+            if (signingFile) signingConfig signingConfigs.privateRelease
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    androidResources { noCompress += ['mp3'] }
+}

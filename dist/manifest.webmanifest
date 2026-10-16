@@ -1,0 +1,18 @@
+{
+  "id": "./",
+  "name": "مملكة الأعداد السحرية",
+  "short_name": "مملكة الأعداد",
+  "description": "عدّ والعب وتعلّم الأعداد من ١ إلى ١٠٠ بالعربية دون إنترنت",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbfaf4",
+  "theme_color": "#147f77",
+  "icons": [
+    {"src":"./icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"./icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"./icon-maskable-512.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+  ]
+}
